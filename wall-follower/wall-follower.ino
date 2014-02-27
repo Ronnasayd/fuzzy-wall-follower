@@ -20,16 +20,16 @@
 
 
 //declaration pins to be used in due arduino
-  #define ENABLE_RIGHT   5  //PWM pin
-  #define ENABLE_LEFT    6  //PWM pin
-  #define INPUT_RIGHT_1  22
-  #define INPUT_RIGHT_2  23
-  #define INPUT_LEFT_1   24
-  #define INPUT_LEFT_2   25
-  #define TRIGPIN_FRONT  53
-  #define ECHOPIN_FRONT  52
-  #define TRIGPIN_RIGHT  46
-  #define ECHOPIN_RIGHT  47
+  #define ENABLEPIN_RIGHT     5  //PWM pin
+  #define ENABLEPIN_LEFT      6  //PWM pin
+  #define OUTPUTPIN_RIGHT_1  22
+  #define OUTPUTPIN_RIGHT_2  23
+  #define OUTPUTPIN_LEFT_1   24
+  #define OUTPUTPIN_LEFT_2   25
+  #define TRIGPIN_FRONT      53
+  #define ECHOPIN_FRONT      52
+  #define TRIGPIN_RIGHT      46
+  #define ECHOPIN_RIGHT      47
 
 
 //variables to be used
@@ -45,12 +45,12 @@ void setup() {
 
 
      //the operation mode setting pins
-	  pinMode(ENABLE_RIGHT,OUTPUT);  
-          pinMode(ENABLE_LEFT,OUTPUT);  
-          pinMode(INPUT_RIGHT_1,OUTPUT);
-          pinMode(INPUT_RIGHT_2,OUTPUT);
-          pinMode(INPUT_LEFT_1,OUTPUT);
-          pinMode(INPUT_LEFT_2,OUTPUT);
+	  pinMode(ENABLEPIN_RIGHT,OUTPUT);  
+          pinMode(ENABLEPIN_LEFT,OUTPUT);  
+          pinMode(OUTPUTPIN_RIGHT_1,OUTPUT);
+          pinMode(OUTPUTPIN_RIGHT_2,OUTPUT);
+          pinMode(OUTPUTPIN_LEFT_1,OUTPUT);
+          pinMode(OUTPUTPIN_LEFT_2,OUTPUT);
           pinMode(TRIGPIN_FRONT,OUTPUT);
           pinMode(ECHOPIN_FRONT,INPUT);
           pinMode(TRIGPIN_RIGHT,OUTPUT);
@@ -191,10 +191,10 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   	//set values ​​of control pins to allow the forward movement of the robot
-  	digitalWrite(INPUT_RIGHT_1,LOW);
-        digitalWrite(INPUT_RIGHT_2,HIGH);
-        digitalWrite(INPUT_LEFT_1,LOW);
-        digitalWrite(INPUT_LEFT_2,HIGH);
+  	digitalWrite(OUTPUTPIN_RIGHT_1,LOW);
+        digitalWrite(OUTPUTPIN_RIGHT_2,HIGH);
+        digitalWrite(OUTPUTPIN_LEFT_1,LOW);
+        digitalWrite(OUTPUTPIN_LEFT_2,HIGH);
 
         //calculating the distance from the front sensor
         distanceFront = calculateDistanceSensor(TRIGPIN_FRONT,ECHOPIN_FRONT);
@@ -214,8 +214,8 @@ void loop() {
         outputLeft = fuzzy->defuzzify(2);
 
 
-        analogWrite(ENABLE_RIGHT,int(outputRight));
-        analogWrite(ENABLE_LEFT,int(outputLeft));
+        analogWrite(ENABLEPIN_RIGHT,int(outputRight));
+        analogWrite(ENABLEPIN_LEFT,int(outputLeft));
 
         //Serial.print(distanceFront);
         //Serial.print("|");
