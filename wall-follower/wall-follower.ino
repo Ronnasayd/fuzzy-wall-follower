@@ -37,7 +37,7 @@ Fuzzy* fuzzy  = new Fuzzy();
 void setup() {
 
 
-		  pinMode(enableRight,OUTPUT);
+	  pinMode(enableRight,OUTPUT);
           pinMode(enableLeft,OUTPUT);
           pinMode(inputRight1,OUTPUT);
           pinMode(inputRight2,OUTPUT);
@@ -182,13 +182,13 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 
-  		digitalWrite(inputRight1,LOW);
+  	digitalWrite(inputRight1,LOW);
         digitalWrite(inputRight2,HIGH);
         digitalWrite(inputLeft1,LOW);
         digitalWrite(inputLeft2,HIGH);
 
 
-   		digitalWrite(trigPinFront,LOW);
+   	digitalWrite(trigPinFront,LOW);
         delayMicroseconds(2);
         digitalWrite(trigPinFront,HIGH);
         delayMicroseconds(10);
