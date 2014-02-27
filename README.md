@@ -1,4 +1,4 @@
-fuzzy-wallfollower
+Fuzzy wall-follower
 ==================
 A fuzzy wall-follower controller  to arduino made with the library eFLL 
 
