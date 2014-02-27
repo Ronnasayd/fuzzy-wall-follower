@@ -19,7 +19,7 @@
 
 
 
-
+//pin declarations
   const int enableRight = 5;
   const int enableLeft = 6;
   const int inputRight1 = 22;
