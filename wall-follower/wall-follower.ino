@@ -11,6 +11,15 @@
 
 
 
+#define MAX_DISTANCE 50
+#define MIN_DISTANCE 1
+
+#define MAX_SPEED 255
+#define MIN_SPEED 0
+
+
+
+
   const int enableRight = 5;
   const int enableLeft = 6;
   const int inputRight1 = 22;
@@ -28,7 +37,7 @@ Fuzzy* fuzzy  = new Fuzzy();
 void setup() {
 
 
-	  pinMode(enableRight,OUTPUT);
+		  pinMode(enableRight,OUTPUT);
           pinMode(enableLeft,OUTPUT);
           pinMode(inputRight1,OUTPUT);
           pinMode(inputRight2,OUTPUT);
@@ -38,7 +47,7 @@ void setup() {
           pinMode(echoPinFront,INPUT);
           pinMode(trigPinRight,OUTPUT);
           pinMode(echoPinRight,INPUT);
-          Serial.begin(9600);
+          //Serial.begin(9600);
 
 
 // create  two new FuzzyInput objects
@@ -46,19 +55,19 @@ void setup() {
   FuzzyInput* distSensorRight = new FuzzyInput(2);
  
  // create the FuzzySets that  copose the FuzzyInput objects 
-  FuzzySet* smallFront = new FuzzySet(0,0,12.5,25.0);
+  FuzzySet* smallFront = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
   distSensorFront->addFuzzySet(smallFront);//add the FuzzySet in the FuzzyInput object
-  FuzzySet* smallRight = new FuzzySet(0,0,12.5,25.0);
+  FuzzySet* smallRight = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
   distSensorRight->addFuzzySet(smallRight);
   
-  FuzzySet*  safeFront = new FuzzySet(12.5,25.0,25.0,37.5);
+  FuzzySet*  safeFront = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
   distSensorFront->addFuzzySet(safeFront);
-  FuzzySet*  safeRight = new FuzzySet(12.5,25.0,25.0,37.5);
+  FuzzySet*  safeRight = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
   distSensorRight->addFuzzySet(safeRight);
   
-  FuzzySet*  bigFront = new FuzzySet(25.0,37.5,50.0,50.0);
+  FuzzySet*  bigFront = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
   distSensorFront->addFuzzySet(bigFront);
-  FuzzySet*  bigRight = new FuzzySet(25.0,37.5,50.0,50.0);
+  FuzzySet*  bigRight = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
   distSensorRight->addFuzzySet(bigRight);
 
   // add the FuzzyInputs in the Fuzzy Object
@@ -70,19 +79,19 @@ void setup() {
   FuzzyOutput* velocityWheelLeft = new FuzzyOutput(2);
 
   // create the FuzzySets that  copose the FuzzyOutput objects 
-  FuzzySet* slowRight = new FuzzySet(0,0,63.75,127.5);
+  FuzzySet* slowRight = new FuzzySet(MIN_SPEED,MIN_SPEED,MAX_SPEED/4,MAX_SPEED/2);
   velocityWheelRight->addFuzzySet(slowRight);//add the FuzzySet in the FuzzyInput object
-  FuzzySet* slowLeft = new FuzzySet(0,0,63.75,127.5);
+  FuzzySet* slowLeft = new FuzzySet(MIN_SPEED,MIN_SPEED,MAX_SPEED/4,MAX_SPEED/2);
   velocityWheelLeft->addFuzzySet(slowLeft);
 
-  FuzzySet* averageRight = new FuzzySet(63.75,127.5,127.5,191.25);
+  FuzzySet* averageRight = new FuzzySet(MAX_SPEED/4,MAX_SPEED/2,MAX_SPEED/2,MAX_SPEED*3/4);
   velocityWheelRight->addFuzzySet(averageRight);
-  FuzzySet* averageLeft = new FuzzySet(63.75,127.5,127.5,191.25);
+  FuzzySet* averageLeft = new FuzzySet(MAX_SPEED/4,MAX_SPEED/2,MAX_SPEED/2,MAX_SPEED*3/4);
   velocityWheelLeft->addFuzzySet(averageLeft);
 
-  FuzzySet* fastRight = new FuzzySet(127.5,191.25,255,255);
+  FuzzySet* fastRight = new FuzzySet(MAX_SPEED/2,MAX_SPEED*3/4,MAX_SPEED,MAX_SPEED);
   velocityWheelRight->addFuzzySet(fastRight);
-  FuzzySet* fastLeft = new FuzzySet(127.5,191.25,255,255);
+  FuzzySet* fastLeft = new FuzzySet(MAX_SPEED/2,MAX_SPEED*3/4,MAX_SPEED,MAX_SPEED);
   velocityWheelLeft->addFuzzySet(fastLeft);
 
 
@@ -173,20 +182,20 @@ void loop() {
   // put your main code here, to run repeatedly:
 
 
-  	digitalWrite(inputRight1,LOW);
+  		digitalWrite(inputRight1,LOW);
         digitalWrite(inputRight2,HIGH);
         digitalWrite(inputLeft1,LOW);
         digitalWrite(inputLeft2,HIGH);
 
 
-   	digitalWrite(trigPinFront,LOW);
+   		digitalWrite(trigPinFront,LOW);
         delayMicroseconds(2);
         digitalWrite(trigPinFront,HIGH);
         delayMicroseconds(10);
         digitalWrite(trigPinFront,LOW);
   
-        unsigned long duracaoFront = pulseIn(echoPinFront,HIGH);
-        int distanciaFront = duracaoFront/58;
+        unsigned long durationFront = pulseIn(echoPinFront,HIGH);
+        int distanceFront = durationFront/58;
 
         digitalWrite(trigPinRight,LOW);
         delayMicroseconds(2);
@@ -194,13 +203,13 @@ void loop() {
         delayMicroseconds(10);
         digitalWrite(trigPinRight,LOW);
   
-        unsigned long duracaoRight = pulseIn(echoPinRight,HIGH);
-        int distanciaRight = duracaoRight/58;
+        unsigned long durationRight = pulseIn(echoPinRight,HIGH);
+        int distanceRight = durationRight/58;
 
 
 
-        fuzzy->setInput(1,distanciaFront);
-        fuzzy->setInput(2,distanciaRight);
+        fuzzy->setInput(1,distanceFront);
+        fuzzy->setInput(2,distanceRight);
 
         fuzzy->fuzzify();
 
@@ -211,13 +220,13 @@ void loop() {
         analogWrite(enableRight,int(outputRight));
         analogWrite(enableLeft,int(outputLeft));
 
-        Serial.print(distanciaFront);
-        Serial.print("|");
-        Serial.print(distanciaRight);
-        Serial.print("|");
-        Serial.print(int(outputRight));
-        Serial.print("|");
-        Serial.println(int(outputLeft));
+        //Serial.print(distanceFront);
+        //Serial.print("|");
+        //Serial.print(distanceRight);
+        //Serial.print("|");
+        //Serial.print(int(outputRight));
+        //Serial.print("|");
+        //Serial.println(int(outputLeft));
         
         delay(200);
         
