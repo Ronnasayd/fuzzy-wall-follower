@@ -20,18 +20,22 @@
 
 
 //declaration pins to be used in due arduino
-  const int enableRight = 5;  //PWM pin
-  const int enableLeft = 6;  //PWM pin
-  const int inputRight1 = 22;
-  const int inputRight2 = 23;
-  const int inputLeft1 = 24;
-  const int inputLeft2 = 25;
-  const int trigPinFront = 53;
-  const int echoPinFront = 52;
-  const int trigPinRight = 46;
-  const int echoPinRight = 47;
+  #define ENABLE_RIGHT   5  //PWM pin
+  #define ENABLE_LEFT    6  //PWM pin
+  #define INPUT_RIGHT_1  22
+  #define INPUT_RIGHT_2  23
+  #define INPUT_LEFT_1   24
+  #define INPUT_LEFT_2   25
+  #define TRIGPIN_FRONT  53
+  #define ECHOPIN_FRONT  52
+  #define TRIGPIN_RIGHT  46
+  #define ECHOPIN_RIGHT  47
 
 
+//variables to be used
+float outputLeft,outputRight,distanceFront,distanceRight;
+
+//function to calculate the distance from the wall until the sensor in cm
 float calculateDistanceSensor(int trigPin, int echoPin);
 
 // create a new fuzzy object
@@ -41,16 +45,16 @@ void setup() {
 
 
      //the operation mode setting pins
-	  pinMode(enableRight,OUTPUT);  
-          pinMode(enableLeft,OUTPUT);  
-          pinMode(inputRight1,OUTPUT);
-          pinMode(inputRight2,OUTPUT);
-          pinMode(inputLeft1,OUTPUT);
-          pinMode(inputLeft2,OUTPUT);
-          pinMode(trigPinFront,OUTPUT);
-          pinMode(echoPinFront,INPUT);
-          pinMode(trigPinRight,OUTPUT);
-          pinMode(echoPinRight,INPUT);
+	  pinMode(ENABLE_RIGHT,OUTPUT);  
+          pinMode(ENABLE_LEFT,OUTPUT);  
+          pinMode(INPUT_RIGHT_1,OUTPUT);
+          pinMode(INPUT_RIGHT_2,OUTPUT);
+          pinMode(INPUT_LEFT_1,OUTPUT);
+          pinMode(INPUT_LEFT_2,OUTPUT);
+          pinMode(TRIGPIN_FRONT,OUTPUT);
+          pinMode(ECHOPIN_FRONT,INPUT);
+          pinMode(TRIGPIN_RIGHT,OUTPUT);
+          pinMode(ECHOPIN_RIGHT,INPUT);
           //Serial.begin(9600);
 
 
@@ -187,16 +191,16 @@ void loop() {
   // put your main code here, to run repeatedly:
 
   	//set values ​​of control pins to allow the forward movement of the robot
-  	digitalWrite(inputRight1,LOW);
-        digitalWrite(inputRight2,HIGH);
-        digitalWrite(inputLeft1,LOW);
-        digitalWrite(inputLeft2,HIGH);
+  	digitalWrite(INPUT_RIGHT_1,LOW);
+        digitalWrite(INPUT_RIGHT_2,HIGH);
+        digitalWrite(INPUT_LEFT_1,LOW);
+        digitalWrite(INPUT_LEFT_2,HIGH);
 
         //calculating the distance from the front sensor
-        float distanceFront = calculateDistanceSensor(trigPinFront,echoPinFront);
+        distanceFront = calculateDistanceSensor(TRIGPIN_FRONT,ECHOPIN_FRONT);
 
         //calculating the distance from the right sensor
-        float distanceRight = calculateDistanceSensor(trigPinRight,echoPinRight);
+        distanceRight = calculateDistanceSensor(TRIGPIN_RIGHT,ECHOPIN_RIGHT);
 
 
         //modifying the fuzzy inputs according to the calculated distances
@@ -206,12 +210,12 @@ void loop() {
         fuzzy->fuzzify();
 
         //receives the output values ​​of the fuzzy system
-        float outputRight = fuzzy->defuzzify(1);
-        float outputLeft = fuzzy->defuzzify(2);
+        outputRight = fuzzy->defuzzify(1);
+        outputLeft = fuzzy->defuzzify(2);
 
 
-        analogWrite(enableRight,int(outputRight));
-        analogWrite(enableLeft,int(outputLeft));
+        analogWrite(ENABLE_RIGHT,int(outputRight));
+        analogWrite(ENABLE_LEFT,int(outputLeft));
 
         //Serial.print(distanceFront);
         //Serial.print("|");
