@@ -20,8 +20,8 @@
 
 
 //declaration pins to be used in due arduino
-  const int enableRight = 5;
-  const int enableLeft = 6;
+  const int enableRight = 5;  //PWM pin
+  const int enableLeft = 6;  //PWM pin
   const int inputRight1 = 22;
   const int inputRight2 = 23;
   const int inputLeft1 = 24;
@@ -31,6 +31,9 @@
   const int trigPinRight = 46;
   const int echoPinRight = 47;
 
+
+float calculateDistanceSensor(int trigPin, int echoPin);
+
 // create a new fuzzy object
 Fuzzy* fuzzy  = new Fuzzy();
 
@@ -38,8 +41,8 @@ void setup() {
 
 
      //the operation mode setting pins
-	  pinMode(enableRight,OUTPUT);  //PWM pin
-          pinMode(enableLeft,OUTPUT);  //PWM pin
+	  pinMode(enableRight,OUTPUT);  
+          pinMode(enableLeft,OUTPUT);  
           pinMode(inputRight1,OUTPUT);
           pinMode(inputRight2,OUTPUT);
           pinMode(inputLeft1,OUTPUT);
@@ -189,26 +192,11 @@ void loop() {
         digitalWrite(inputLeft1,LOW);
         digitalWrite(inputLeft2,HIGH);
 
-    //calculating the distance from the front sensor
-   	digitalWrite(trigPinFront,LOW);
-        delayMicroseconds(2);
-        digitalWrite(trigPinFront,HIGH);
-        delayMicroseconds(10);
-        digitalWrite(trigPinFront,LOW);
-  
-        unsigned long durationFront = pulseIn(echoPinFront,HIGH);
-        int distanceFront = durationFront/58;
-
+        //calculating the distance from the front sensor
+        float distanceFront = calculateDistanceSensor(trigPinFront,echoPinFront);
 
         //calculating the distance from the right sensor
-        digitalWrite(trigPinRight,LOW);
-        delayMicroseconds(2);
-        digitalWrite(trigPinRight,HIGH);
-        delayMicroseconds(10);
-        digitalWrite(trigPinRight,LOW);
-  
-        unsigned long durationRight = pulseIn(echoPinRight,HIGH);
-        int distanceRight = durationRight/58;
+        float distanceRight = calculateDistanceSensor(trigPinRight,echoPinRight);
 
 
         //modifying the fuzzy inputs according to the calculated distances
@@ -238,3 +226,13 @@ void loop() {
 
 }
 
+float calculateDistanceSensor(int trigPin, int echoPin){
+	digitalWrite(trigPin,LOW);
+        delayMicroseconds(2);
+        digitalWrite(trigPin,HIGH);
+        delayMicroseconds(10);
+        digitalWrite(trigPin,LOW);
+  
+        unsigned long duration = pulseIn(echoPin,HIGH);
+        return duration/58;
+}
