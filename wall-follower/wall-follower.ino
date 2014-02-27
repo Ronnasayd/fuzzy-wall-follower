@@ -10,7 +10,7 @@
 
 
 
-
+//setting the maximum and minimum values
 #define MAX_DISTANCE 50
 #define MIN_DISTANCE 1
 
@@ -19,7 +19,7 @@
 
 
 
-//pin declarations
+//declaration pins to be used in due arduino
   const int enableRight = 5;
   const int enableLeft = 6;
   const int inputRight1 = 22;
@@ -37,8 +37,9 @@ Fuzzy* fuzzy  = new Fuzzy();
 void setup() {
 
 
-	  pinMode(enableRight,OUTPUT);
-          pinMode(enableLeft,OUTPUT);
+     //the operation mode setting pins
+	  pinMode(enableRight,OUTPUT);  //PWM pin
+          pinMode(enableLeft,OUTPUT);  //PWM pin
           pinMode(inputRight1,OUTPUT);
           pinMode(inputRight2,OUTPUT);
           pinMode(inputLeft1,OUTPUT);
@@ -100,7 +101,7 @@ void setup() {
   fuzzy->addFuzzyOutput(velocityWheelLeft);
 
 
-  // Building FuzzyRule
+  //building the antecedents fuzzy rules
   FuzzyRuleAntecedent* smallFrontAndSmallRight = new FuzzyRuleAntecedent();
   	smallFrontAndSmallRight->joinWithAND(smallFront,smallRight); 
   FuzzyRuleAntecedent* smallFrontAndSafeRight = new FuzzyRuleAntecedent();
@@ -121,6 +122,7 @@ void setup() {
   	bigFrontAndBigRight->joinWithAND(bigFront,bigRight);
 
 
+  //building the consequent fuzzy rules
   FuzzyRuleConsequent* fastVeolityRight = new FuzzyRuleConsequent();
   	fastVeolityRight->addOutput(fastRight);
   FuzzyRuleConsequent* averageVelocityRight = new FuzzyRuleConsequent();
@@ -134,7 +136,7 @@ void setup() {
   FuzzyRuleConsequent* slowVelocityLeft = new FuzzyRuleConsequent();
   	slowVelocityLeft->addOutput(slowLeft);
   	
-  
+  //connection the antecedent rules with consequent
   FuzzyRule* fuzzyRule01 = new FuzzyRule(1,smallFrontAndSmallRight,fastVeolityRight);
   	fuzzy->addFuzzyRule(fuzzyRule01);
   FuzzyRule* fuzzyRule02 = new FuzzyRule(2,smallFrontAndSmallRight,slowVelocityLeft);
@@ -181,13 +183,13 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
 
-
+  	//set values ​​of control pins to allow the forward movement of the robot
   	digitalWrite(inputRight1,LOW);
         digitalWrite(inputRight2,HIGH);
         digitalWrite(inputLeft1,LOW);
         digitalWrite(inputLeft2,HIGH);
 
-
+    //calculating the distance from the front sensor
    	digitalWrite(trigPinFront,LOW);
         delayMicroseconds(2);
         digitalWrite(trigPinFront,HIGH);
@@ -197,6 +199,8 @@ void loop() {
         unsigned long durationFront = pulseIn(echoPinFront,HIGH);
         int distanceFront = durationFront/58;
 
+
+        //calculating the distance from the right sensor
         digitalWrite(trigPinRight,LOW);
         delayMicroseconds(2);
         digitalWrite(trigPinRight,HIGH);
@@ -207,12 +211,13 @@ void loop() {
         int distanceRight = durationRight/58;
 
 
-
+        //modifying the fuzzy inputs according to the calculated distances
         fuzzy->setInput(1,distanceFront);
         fuzzy->setInput(2,distanceRight);
 
         fuzzy->fuzzify();
 
+        //receives the output values ​​of the fuzzy system
         float outputRight = fuzzy->defuzzify(1);
         float outputLeft = fuzzy->defuzzify(2);
 
