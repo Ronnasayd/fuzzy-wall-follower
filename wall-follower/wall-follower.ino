@@ -19,16 +19,16 @@
 
 
 //declaration pins to be used in due arduino
-  #define ENABLEPIN_RIGHT     5  //PWM pin
-  #define ENABLEPIN_LEFT      6  //PWM pin
-  #define OUTPUTPIN_RIGHT_1  22
-  #define OUTPUTPIN_RIGHT_2  23
-  #define OUTPUTPIN_LEFT_1   24
-  #define OUTPUTPIN_LEFT_2   25
-  #define TRIGPIN_FRONT      53
-  #define ECHOPIN_FRONT      52
-  #define TRIGPIN_RIGHT      46
-  #define ECHOPIN_RIGHT      47
+  #define ENABLEPIN_RIGHT     	5  //PWM pin
+  #define ENABLEPIN_LEFT      	6  //PWM pin
+  #define OUTPUTPIN_RIGHT_1  	22
+  #define OUTPUTPIN_RIGHT_2  	23
+  #define OUTPUTPIN_LEFT_1   	24
+  #define OUTPUTPIN_LEFT_2   	25
+  #define TRIGPIN_FRONT      	53
+  #define ECHOPIN_FRONT       	52
+  #define TRIGPIN_LATERAL      	46
+  #define ECHOPIN_LATERAL      	47
 
 
 //variables to be used
@@ -52,33 +52,33 @@ void setup() {
           pinMode(OUTPUTPIN_LEFT_2,OUTPUT);
           pinMode(TRIGPIN_FRONT,OUTPUT);
           pinMode(ECHOPIN_FRONT,INPUT);
-          pinMode(TRIGPIN_RIGHT,OUTPUT);
-          pinMode(ECHOPIN_RIGHT,INPUT);
+          pinMode(TRIGPIN_LATERAL,OUTPUT);
+          pinMode(ECHOPIN_LATERAL,INPUT);
           //Serial.begin(9600);
 
 
 // create  two new FuzzyInput objects
   FuzzyInput* frontDistanceSensor = new FuzzyInput(1);
-  FuzzyInput* rightDistanceSensor = new FuzzyInput(2);
+  FuzzyInput* lateralDistanceSensor = new FuzzyInput(2);
  
  // create the FuzzySets that  copose the FuzzyInput objects 
   FuzzySet* smallFrontDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
   frontDistanceSensor->addFuzzySet(smallFrontDistance);//add the FuzzySet in the FuzzyInput object
-  FuzzySet* smallRightDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
-  rightDistanceSensor->addFuzzySet(smallRightDistance);
+  FuzzySet* smallLateralDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
+  lateralDistanceSensor->addFuzzySet(smallLateralDistance);
   
   FuzzySet*  safeFrontDistance = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
   frontDistanceSensor->addFuzzySet(safeFrontDistance);
-  FuzzySet*  safeRightDistance = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
-  rightDistanceSensor->addFuzzySet(safeRightDistance);
+  FuzzySet*  safeLateralDistance = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
+  lateralDistanceSensor->addFuzzySet(safeLateralDistance);
   
   FuzzySet*  bigFrontDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
   frontDistanceSensor->addFuzzySet(bigFrontDistance);
-  FuzzySet*  bigRightDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
-  rightDistanceSensor->addFuzzySet(bigRightDistance);
+  FuzzySet*  bigLateralDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
+  lateralDistanceSensor->addFuzzySet(bigLateralDistance);
 
   // add the FuzzyInputs in the Fuzzy Object
-  fuzzy->addFuzzyInput(rightDistanceSensor);
+  fuzzy->addFuzzyInput(lateralDistanceSensor);
   fuzzy->addFuzzyInput(frontDistanceSensor);
   
   //create two new FuzzyOutput objects
@@ -108,24 +108,24 @@ void setup() {
 
 
   //building the antecedents fuzzy rules
-  FuzzyRuleAntecedent* smallFrontDistanceAndsmallRightDistance = new FuzzyRuleAntecedent();
-  	smallFrontDistanceAndsmallRightDistance->joinWithAND(smallFrontDistance,smallRightDistance); 
-  FuzzyRuleAntecedent* smallFrontDistanceAndsafeRightDistance = new FuzzyRuleAntecedent();
-  	smallFrontDistanceAndsafeRightDistance->joinWithAND(smallFrontDistance,safeRightDistance);
-  FuzzyRuleAntecedent* smallFrontDistanceAndbigRightDistance = new FuzzyRuleAntecedent();
-  	smallFrontDistanceAndbigRightDistance->joinWithAND(smallFrontDistance,bigRightDistance);
-  FuzzyRuleAntecedent* safeFrontDistanceAndsmallRightDistance = new FuzzyRuleAntecedent();
-  	safeFrontDistanceAndsmallRightDistance->joinWithAND(safeFrontDistance,smallRightDistance);
-  FuzzyRuleAntecedent* safeFrontDistanceAndsafeRightDistance = new FuzzyRuleAntecedent();
-  	safeFrontDistanceAndsafeRightDistance->joinWithAND(safeFrontDistance,safeRightDistance);
-  FuzzyRuleAntecedent* safeFrontDistanceAndbigRightDistance = new FuzzyRuleAntecedent();
-  	safeFrontDistanceAndbigRightDistance->joinWithAND(safeFrontDistance,bigRightDistance);
-  FuzzyRuleAntecedent* bigFrontDistanceAndsmallRightDistance = new FuzzyRuleAntecedent();
-  	bigFrontDistanceAndsmallRightDistance->joinWithAND(bigFrontDistance,smallRightDistance);
-  FuzzyRuleAntecedent* bigFrontDistanceAndsafeRightDistance = new FuzzyRuleAntecedent();
-  	bigFrontDistanceAndsafeRightDistance->joinWithAND(bigFrontDistance,safeRightDistance);
-  FuzzyRuleAntecedent* bigFrontDistanceAndbigRightDistance = new FuzzyRuleAntecedent();
-  	bigFrontDistanceAndbigRightDistance->joinWithAND(bigFrontDistance,bigRightDistance);
+  FuzzyRuleAntecedent* smallFrontDistanceAndsmallLateralDistance = new FuzzyRuleAntecedent();
+  	smallFrontDistanceAndsmallLateralDistance->joinWithAND(smallFrontDistance,smallLateralDistance); 
+  FuzzyRuleAntecedent* smallFrontDistanceAndsafeLateralDistance = new FuzzyRuleAntecedent();
+  	smallFrontDistanceAndsafeLateralDistance->joinWithAND(smallFrontDistance,safeLateralDistance);
+  FuzzyRuleAntecedent* smallFrontDistanceAndbigLateralDistance = new FuzzyRuleAntecedent();
+  	smallFrontDistanceAndbigLateralDistance->joinWithAND(smallFrontDistance,bigLateralDistance);
+  FuzzyRuleAntecedent* safeFrontDistanceAndsmallLateralDistance = new FuzzyRuleAntecedent();
+  	safeFrontDistanceAndsmallLateralDistance->joinWithAND(safeFrontDistance,smallLateralDistance);
+  FuzzyRuleAntecedent* safeFrontDistanceAndsafeLateralDistance = new FuzzyRuleAntecedent();
+  	safeFrontDistanceAndsafeLateralDistance->joinWithAND(safeFrontDistance,safeLateralDistance);
+  FuzzyRuleAntecedent* safeFrontDistanceAndbigLateralDistance = new FuzzyRuleAntecedent();
+  	safeFrontDistanceAndbigLateralDistance->joinWithAND(safeFrontDistance,bigLateralDistance);
+  FuzzyRuleAntecedent* bigFrontDistanceAndsmallLateralDistance = new FuzzyRuleAntecedent();
+  	bigFrontDistanceAndsmallLateralDistance->joinWithAND(bigFrontDistance,smallLateralDistance);
+  FuzzyRuleAntecedent* bigFrontDistanceAndsafeLateralDistance = new FuzzyRuleAntecedent();
+  	bigFrontDistanceAndsafeLateralDistance->joinWithAND(bigFrontDistance,safeLateralDistance);
+  FuzzyRuleAntecedent* bigFrontDistanceAndbigLateralDistance = new FuzzyRuleAntecedent();
+  	bigFrontDistanceAndbigLateralDistance->joinWithAND(bigFrontDistance,bigLateralDistance);
 
 
   //building the consequent fuzzy rules
@@ -143,41 +143,41 @@ void setup() {
   	lowerLeftSpeedWheel->addOutput(lowerLeftSpeed);
   	
   //connection the antecedent rules with consequent
-  FuzzyRule* fuzzyRule01 = new FuzzyRule(1,smallFrontDistanceAndsmallRightDistance,fastRightSpeedWheel);
+  FuzzyRule* fuzzyRule01 = new FuzzyRule(1,smallFrontDistanceAndsmallLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule01);
-  FuzzyRule* fuzzyRule02 = new FuzzyRule(2,smallFrontDistanceAndsmallRightDistance,lowerLeftSpeedWheel);
+  FuzzyRule* fuzzyRule02 = new FuzzyRule(2,smallFrontDistanceAndsmallLateralDistance,lowerLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule02);
-  FuzzyRule* fuzzyRule03 = new FuzzyRule(3,smallFrontDistanceAndsafeRightDistance,fastRightSpeedWheel);
+  FuzzyRule* fuzzyRule03 = new FuzzyRule(3,smallFrontDistanceAndsafeLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule03);
-  FuzzyRule* fuzzyRule04 = new FuzzyRule(4,smallFrontDistanceAndsafeRightDistance,lowerLeftSpeedWheel);
+  FuzzyRule* fuzzyRule04 = new FuzzyRule(4,smallFrontDistanceAndsafeLateralDistance,lowerLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule04);
-  FuzzyRule* fuzzyRule05 = new FuzzyRule(5,smallFrontDistanceAndbigRightDistance,fastRightSpeedWheel);
+  FuzzyRule* fuzzyRule05 = new FuzzyRule(5,smallFrontDistanceAndbigLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule05);
-  FuzzyRule* fuzzyRule06 = new FuzzyRule(6,smallFrontDistanceAndbigRightDistance,lowerLeftSpeedWheel);	
+  FuzzyRule* fuzzyRule06 = new FuzzyRule(6,smallFrontDistanceAndbigLateralDistance,lowerLeftSpeedWheel);	
   	fuzzy->addFuzzyRule(fuzzyRule06);
-  FuzzyRule* fuzzyRule07 = new FuzzyRule(7,safeFrontDistanceAndsmallRightDistance,fastRightSpeedWheel);
+  FuzzyRule* fuzzyRule07 = new FuzzyRule(7,safeFrontDistanceAndsmallLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule07);
-  FuzzyRule* fuzzyRule08 = new FuzzyRule(8,safeFrontDistanceAndsmallRightDistance,averageLeftSpeedWheel);
+  FuzzyRule* fuzzyRule08 = new FuzzyRule(8,safeFrontDistanceAndsmallLateralDistance,averageLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule08);
-  FuzzyRule* fuzzyRule09 = new FuzzyRule(9,safeFrontDistanceAndsafeRightDistance,fastRightSpeedWheel);
+  FuzzyRule* fuzzyRule09 = new FuzzyRule(9,safeFrontDistanceAndsafeLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule09);
-  FuzzyRule* fuzzyRule10 = new FuzzyRule(10,safeFrontDistanceAndsafeRightDistance,fastLeftSpeedWheel);
+  FuzzyRule* fuzzyRule10 = new FuzzyRule(10,safeFrontDistanceAndsafeLateralDistance,fastLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule10);
-  FuzzyRule* fuzzyRule11 = new FuzzyRule(11,safeFrontDistanceAndbigRightDistance,averageRightSpeedWheel);
+  FuzzyRule* fuzzyRule11 = new FuzzyRule(11,safeFrontDistanceAndbigLateralDistance,averageRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule11);
-  FuzzyRule* fuzzyRule12 = new FuzzyRule(12,safeFrontDistanceAndbigRightDistance,fastLeftSpeedWheel);
+  FuzzyRule* fuzzyRule12 = new FuzzyRule(12,safeFrontDistanceAndbigLateralDistance,fastLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule12);
-  FuzzyRule* fuzzyRule13 = new FuzzyRule(13,bigFrontDistanceAndsmallRightDistance,fastRightSpeedWheel);
+  FuzzyRule* fuzzyRule13 = new FuzzyRule(13,bigFrontDistanceAndsmallLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule13);
-  FuzzyRule* fuzzyRule14 = new FuzzyRule(14,bigFrontDistanceAndsmallRightDistance,averageLeftSpeedWheel);
+  FuzzyRule* fuzzyRule14 = new FuzzyRule(14,bigFrontDistanceAndsmallLateralDistance,averageLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule14);
-  FuzzyRule* fuzzyRule15 = new FuzzyRule(15,bigFrontDistanceAndsafeRightDistance,fastRightSpeedWheel);
+  FuzzyRule* fuzzyRule15 = new FuzzyRule(15,bigFrontDistanceAndsafeLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule15);
-  FuzzyRule* fuzzyRule16 = new FuzzyRule(16,bigFrontDistanceAndsafeRightDistance,fastLeftSpeedWheel);
+  FuzzyRule* fuzzyRule16 = new FuzzyRule(16,bigFrontDistanceAndsafeLateralDistance,fastLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule16);
-  FuzzyRule* fuzzyRule17 = new FuzzyRule(17,bigFrontDistanceAndbigRightDistance,lowerRightSpeedWheel);
+  FuzzyRule* fuzzyRule17 = new FuzzyRule(17,bigFrontDistanceAndbigLateralDistance,lowerRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule17);
-  FuzzyRule* fuzzyRule18 = new FuzzyRule(18,bigFrontDistanceAndbigRightDistance,fastLeftSpeedWheel);
+  FuzzyRule* fuzzyRule18 = new FuzzyRule(18,bigFrontDistanceAndbigLateralDistance,fastLeftSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule18);	
 
 
@@ -199,7 +199,7 @@ void loop() {
         distanceFront = calculateDistanceSensor(TRIGPIN_FRONT,ECHOPIN_FRONT);
 
         //calculating the distance from the right sensor
-        distanceRight = calculateDistanceSensor(TRIGPIN_RIGHT,ECHOPIN_RIGHT);
+        distanceRight = calculateDistanceSensor(TRIGPIN_LATERAL,ECHOPIN_LATERAL);
 
 
         //modifying the fuzzy inputs according to the calculated distances
