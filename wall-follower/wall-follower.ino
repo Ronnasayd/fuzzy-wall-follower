@@ -58,28 +58,28 @@ void setup() {
 
 
 // create  two new FuzzyInput objects
-  FuzzyInput* distanceSensorFront = new FuzzyInput(1);
-  FuzzyInput* distanceSensorRight = new FuzzyInput(2);
+  FuzzyInput* frontDistanceSensor = new FuzzyInput(1);
+  FuzzyInput* rightDistanceSensor = new FuzzyInput(2);
  
  // create the FuzzySets that  copose the FuzzyInput objects 
   FuzzySet* smallFrontDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
-  distanceSensorFront->addFuzzySet(smallFrontDistance);//add the FuzzySet in the FuzzyInput object
+  frontDistanceSensor->addFuzzySet(smallFrontDistance);//add the FuzzySet in the FuzzyInput object
   FuzzySet* smallRightDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
-  distanceSensorRight->addFuzzySet(smallRightDistance);
+  rightDistanceSensor->addFuzzySet(smallRightDistance);
   
   FuzzySet*  safeFrontDistance = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
-  distanceSensorFront->addFuzzySet(safeFrontDistance);
+  frontDistanceSensor->addFuzzySet(safeFrontDistance);
   FuzzySet*  safeRightDistance = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
-  distanceSensorRight->addFuzzySet(safeRightDistance);
+  rightDistanceSensor->addFuzzySet(safeRightDistance);
   
   FuzzySet*  bigFrontDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
-  distanceSensorFront->addFuzzySet(bigFrontDistance);
+  frontDistanceSensor->addFuzzySet(bigFrontDistance);
   FuzzySet*  bigRightDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
-  distanceSensorRight->addFuzzySet(bigRightDistance);
+  rightDistanceSensor->addFuzzySet(bigRightDistance);
 
   // add the FuzzyInputs in the Fuzzy Object
-  fuzzy->addFuzzyInput(distanceSensorRight);
-  fuzzy->addFuzzyInput(distanceSensorFront);
+  fuzzy->addFuzzyInput(rightDistanceSensor);
+  fuzzy->addFuzzyInput(frontDistanceSensor);
   
   //create two new FuzzyOutput objects
   FuzzyOutput* rightWheelSpeed = new FuzzyOutput(1);
