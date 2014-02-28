@@ -5,7 +5,7 @@ a fuzzy controller for a wall follower robot made ​​with Arduino library eFL
 ##eFLL documentation:
 http://zerokol.com/product/51e93616e84c5571b7000018/1/pt-BR
 
-##eFLL github::
+##eFLL github:
 https://github.com/zerokol/eFLL
 
 ##main components of the robot: 
