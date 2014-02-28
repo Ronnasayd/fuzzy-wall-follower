@@ -10,7 +10,7 @@
 
 
 
-//setting the maximum and minimum values
+// setting the maximum and minimum values
 #define MAX_DISTANCE 50
 #define MIN_DISTANCE 1
 #define MAX_SPEED 255
@@ -18,9 +18,9 @@
 
 
 
-//declaration pins to be used in due arduino
-  #define ENABLEPIN_RIGHT     	5  //PWM pin
-  #define ENABLEPIN_LEFT      	6  //PWM pin
+// declaration pins to be used in due arduino
+  #define ENABLEPIN_RIGHT     	5  // PWM pin
+  #define ENABLEPIN_LEFT      	6  // PWM pin
   #define OUTPUTPIN_RIGHT_1  	22
   #define OUTPUTPIN_RIGHT_2  	23
   #define OUTPUTPIN_LEFT_1   	24
@@ -31,19 +31,19 @@
   #define ECHOPIN_LATERAL      	47
 
 
-//variables to be used
-float outputLeft,outputRight,distanceFront,distanceRight;
+// variables to be used
+float outputLeft,outputRight,distanceFront,distanceLateral;
 
-//function to calculate the distance from the wall until the sensor in cm
+// function to calculate the distance from the wall until the sensor in cm
 float calculateDistanceSensor(int trigPin, int echoPin);
 
-// create a new fuzzy object
+//  create a new fuzzy object
 Fuzzy* fuzzy  = new Fuzzy();
 
 void setup() {
 
 
-     //the operation mode setting pins
+     // the operation mode setting pins
 	  pinMode(ENABLEPIN_RIGHT,OUTPUT);  
           pinMode(ENABLEPIN_LEFT,OUTPUT);  
           pinMode(OUTPUTPIN_RIGHT_1,OUTPUT);
@@ -54,16 +54,16 @@ void setup() {
           pinMode(ECHOPIN_FRONT,INPUT);
           pinMode(TRIGPIN_LATERAL,OUTPUT);
           pinMode(ECHOPIN_LATERAL,INPUT);
-          //Serial.begin(9600);
+          // Serial.begin(9600);
 
 
-// create  two new FuzzyInput objects
+//  create  two new FuzzyInput objects
   FuzzyInput* frontDistanceSensor = new FuzzyInput(1);
   FuzzyInput* lateralDistanceSensor = new FuzzyInput(2);
  
- // create the FuzzySets that  copose the FuzzyInput objects 
+ //  create the FuzzySets that  copose the FuzzyInput objects 
   FuzzySet* smallFrontDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
-  frontDistanceSensor->addFuzzySet(smallFrontDistance);//add the FuzzySet in the FuzzyInput object
+  frontDistanceSensor->addFuzzySet(smallFrontDistance);// add the FuzzySet in the FuzzyInput object
   FuzzySet* smallLateralDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
   lateralDistanceSensor->addFuzzySet(smallLateralDistance);
   
@@ -77,17 +77,17 @@ void setup() {
   FuzzySet*  bigLateralDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
   lateralDistanceSensor->addFuzzySet(bigLateralDistance);
 
-  // add the FuzzyInputs in the Fuzzy Object
+  //  add the FuzzyInputs in the Fuzzy Object
   fuzzy->addFuzzyInput(lateralDistanceSensor);
   fuzzy->addFuzzyInput(frontDistanceSensor);
   
-  //create two new FuzzyOutput objects
+  // create two new FuzzyOutput objects
   FuzzyOutput* rightWheelSpeed = new FuzzyOutput(1);
   FuzzyOutput* leftWheelSpeed = new FuzzyOutput(2);
 
-  // create the FuzzySets that  copose the FuzzyOutput objects 
+  //  create the FuzzySets that  copose the FuzzyOutput objects 
   FuzzySet* lowerRightSpeed = new FuzzySet(MIN_SPEED,MIN_SPEED,MAX_SPEED/4,MAX_SPEED/2);
-  rightWheelSpeed->addFuzzySet(lowerRightSpeed);//add the FuzzySet in the FuzzyInput object
+  rightWheelSpeed->addFuzzySet(lowerRightSpeed);// add the FuzzySet in the FuzzyInput object
   FuzzySet* lowerLeftSpeed = new FuzzySet(MIN_SPEED,MIN_SPEED,MAX_SPEED/4,MAX_SPEED/2);
   leftWheelSpeed->addFuzzySet(lowerLeftSpeed);
 
@@ -102,12 +102,12 @@ void setup() {
   leftWheelSpeed->addFuzzySet(fastLeftSpeed);
 
 
-  //add the FuzzyOutputs in the Fuzzy object
+  // add the FuzzyOutputs in the Fuzzy object
   fuzzy->addFuzzyOutput(rightWheelSpeed);
   fuzzy->addFuzzyOutput(leftWheelSpeed);
 
 
-  //building the antecedents fuzzy rules
+  // building the antecedents fuzzy rules
   FuzzyRuleAntecedent* smallFrontDistanceAndsmallLateralDistance = new FuzzyRuleAntecedent();
   	smallFrontDistanceAndsmallLateralDistance->joinWithAND(smallFrontDistance,smallLateralDistance); 
   FuzzyRuleAntecedent* smallFrontDistanceAndsafeLateralDistance = new FuzzyRuleAntecedent();
@@ -128,7 +128,7 @@ void setup() {
   	bigFrontDistanceAndbigLateralDistance->joinWithAND(bigFrontDistance,bigLateralDistance);
 
 
-  //building the consequent fuzzy rules
+  // building the consequent fuzzy rules
   FuzzyRuleConsequent* fastRightSpeedWheel = new FuzzyRuleConsequent();
   	fastRightSpeedWheel->addOutput(fastRightSpeed);
   FuzzyRuleConsequent* averageRightSpeedWheel = new FuzzyRuleConsequent();
@@ -142,7 +142,7 @@ void setup() {
   FuzzyRuleConsequent* lowerLeftSpeedWheel = new FuzzyRuleConsequent();
   	lowerLeftSpeedWheel->addOutput(lowerLeftSpeed);
   	
-  //connection the antecedent rules with consequent
+  // connection between antecedent and consequent rules
   FuzzyRule* fuzzyRule01 = new FuzzyRule(1,smallFrontDistanceAndsmallLateralDistance,fastRightSpeedWheel);
   	fuzzy->addFuzzyRule(fuzzyRule01);
   FuzzyRule* fuzzyRule02 = new FuzzyRule(2,smallFrontDistanceAndsmallLateralDistance,lowerLeftSpeedWheel);
@@ -187,49 +187,49 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  //  put your main code here, to run repeatedly:
 
-  	//set values ​​of control pins to allow the forward movement of the robot
+  	// set values ​​of control pins to allow the forward movement of the robot
   	digitalWrite(OUTPUTPIN_RIGHT_1,LOW);
         digitalWrite(OUTPUTPIN_RIGHT_2,HIGH);
         digitalWrite(OUTPUTPIN_LEFT_1,LOW);
         digitalWrite(OUTPUTPIN_LEFT_2,HIGH);
 
-        //calculating the distance from the front sensor
+        // calculating the distance from the front sensor
         distanceFront = calculateDistanceSensor(TRIGPIN_FRONT,ECHOPIN_FRONT);
 
-        //calculating the distance from the right sensor
-        distanceRight = calculateDistanceSensor(TRIGPIN_LATERAL,ECHOPIN_LATERAL);
+        // calculating the distance from the right sensor
+        distanceLateral = calculateDistanceSensor(TRIGPIN_LATERAL,ECHOPIN_LATERAL);
 
 
-        //modifying the fuzzy inputs according to the calculated distances
+        // modifying the fuzzy inputs according to the calculated distances
         fuzzy->setInput(1,distanceFront);
-        fuzzy->setInput(2,distanceRight);
+        fuzzy->setInput(2,distanceLateral);
 
         fuzzy->fuzzify();
 
 
-        //receives the output values ​​of the fuzzy system
+        // receives the output values ​​of the fuzzy system
 
-        //if the lateral sensor is on the right side then the outputs are:
+        // if the lateral sensor is on the right side then the outputs are:
         outputRight = fuzzy->defuzzify(1);
         outputLeft = fuzzy->defuzzify(2);
 
 
-        //if the lateral sensor is on the left side then the outputs are:
-        //outputRight = fuzzy->defuzzify(2);
-        //outputLeft = fuzzy->defuzzify(1);
+        // if the lateral sensor is on the left side then the outputs are:
+        // outputRight = fuzzy->defuzzify(2);
+        // outputLeft = fuzzy->defuzzify(1);
 
         analogWrite(ENABLEPIN_RIGHT,int(outputRight));
         analogWrite(ENABLEPIN_LEFT,int(outputLeft));
 
-        //Serial.print(distanceFront);
-        //Serial.print("|");
-        //Serial.print(distanceRight);
-        //Serial.print("|");
-        //Serial.print(int(outputRight));
-        //Serial.print("|");
-        //Serial.println(int(outputLeft));
+        // Serial.print(distanceFront);
+        // Serial.print("|");
+        // Serial.print(distanceLateral);
+        // Serial.print("|");
+        // Serial.print(int(outputRight));
+        // Serial.print("|");
+        // Serial.println(int(outputLeft));
         
         delay(200);
         
