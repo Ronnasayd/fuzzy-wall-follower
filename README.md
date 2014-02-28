@@ -1,10 +1,16 @@
 Fuzzy wall-follower
 ==================
-A fuzzy wall-follower controller  to arduino made with the library eFLL 
+a fuzzy controller for a wall follower robot made ​​with Arduino library eFLL 
 
-##documentation eFLL:
+##eFLL documentation:
 http://zerokol.com/product/51e93616e84c5571b7000018/1/pt-BR
 
-##github eFLL:
+##eFLL github::
 https://github.com/zerokol/eFLL
+
+##main components of the robot: 
+1 due arduino 
+2 dc motors 
+1 ci L293D to control motors 
+2 HC-SR04 ultrasonic sensors
 
