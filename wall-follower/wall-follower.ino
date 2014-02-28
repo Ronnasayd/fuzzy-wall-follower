@@ -208,10 +208,17 @@ void loop() {
 
         fuzzy->fuzzify();
 
+
         //receives the output values ​​of the fuzzy system
+
+        //if the lateral sensor is on the right side then the outputs are:
         outputRight = fuzzy->defuzzify(1);
         outputLeft = fuzzy->defuzzify(2);
 
+
+        //if the lateral sensor is on the left side then the outputs are:
+        //outputRight = fuzzy->defuzzify(2);
+        //outputLeft = fuzzy->defuzzify(1);
 
         analogWrite(ENABLEPIN_RIGHT,int(outputRight));
         analogWrite(ENABLEPIN_LEFT,int(outputLeft));
