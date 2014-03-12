@@ -11,9 +11,11 @@
 
 
 // setting the maximum and minimum values
-	#define MAX_DISTANCE 50
-	#define MIN_DISTANCE 1
-	#define MAX_SPEED 255
+	#define MAX_DISTANCE_FRONT 50
+	#define MIN_DISTANCE_FRONT 1
+	#define MAX_DISTANCE_LATERAL 20
+	#define MIN_DISTANCE_LATERAL 1
+	#define MAX_SPEED 320
 	#define MIN_SPEED 0
 
 
@@ -62,19 +64,19 @@ void setup() {
 	  FuzzyInput* lateralDistanceSensor = new FuzzyInput(2);
  
  //  create the FuzzySets that  copose the FuzzyInput objects 
-	  FuzzySet* smallFrontDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
+	  FuzzySet* smallFrontDistance = new FuzzySet(MIN_DISTANCE_FRONT,MIN_DISTANCE_FRONT,MAX_DISTANCE_FRONT/4,MAX_DISTANCE_FRONT/2);
 	  frontDistanceSensor->addFuzzySet(smallFrontDistance);// add the FuzzySet in the FuzzyInput object
-	  FuzzySet* smallLateralDistance = new FuzzySet(MIN_DISTANCE,MIN_DISTANCE,MAX_DISTANCE/4,MAX_DISTANCE/2);
+	  FuzzySet* smallLateralDistance = new FuzzySet(MIN_DISTANCE_LATERAL,MIN_DISTANCE_LATERAL,MAX_DISTANCE_LATERAL/4,MAX_DISTANCE_LATERAL/2);
 	  lateralDistanceSensor->addFuzzySet(smallLateralDistance);
 	  
-	  FuzzySet*  safeFrontDistance = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
+	  FuzzySet*  safeFrontDistance = new FuzzySet(MAX_DISTANCE_FRONT/4,MAX_DISTANCE_FRONT/2,MAX_DISTANCE_FRONT/2,MAX_DISTANCE_FRONT*3/4);
 	  frontDistanceSensor->addFuzzySet(safeFrontDistance);
-	  FuzzySet*  safeLateralDistance = new FuzzySet(MAX_DISTANCE/4,MAX_DISTANCE/2,MAX_DISTANCE/2,MAX_DISTANCE*3/4);
+	  FuzzySet*  safeLateralDistance = new FuzzySet(MAX_DISTANCE_LATERAL/4,MAX_DISTANCE_LATERAL/2,MAX_DISTANCE_LATERAL/2,MAX_DISTANCE_LATERAL*3/4);
 	  lateralDistanceSensor->addFuzzySet(safeLateralDistance);
 	  
-	  FuzzySet*  bigFrontDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
+	  FuzzySet*  bigFrontDistance = new FuzzySet(MAX_DISTANCE_FRONT/2,MAX_DISTANCE_FRONT*3/4,MAX_DISTANCE_FRONT,MAX_DISTANCE_FRONT);
 	  frontDistanceSensor->addFuzzySet(bigFrontDistance);
-	  FuzzySet*  bigLateralDistance = new FuzzySet(MAX_DISTANCE/2,MAX_DISTANCE*3/4,MAX_DISTANCE,MAX_DISTANCE);
+	  FuzzySet*  bigLateralDistance = new FuzzySet(MAX_DISTANCE_LATERAL/2,MAX_DISTANCE_LATERAL*3/4,MAX_DISTANCE_LATERAL,MAX_DISTANCE_LATERAL);
 	  lateralDistanceSensor->addFuzzySet(bigLateralDistance);
 
   //  add the FuzzyInputs in the Fuzzy Object
